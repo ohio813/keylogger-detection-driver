@@ -1,0 +1,11 @@
+TARGETNAME=dynamic_detector 
+TARGETPATH=BIN
+TARGETTYPE=DRIVER
+MSC_WARNING_LEVEL=/W3
+SOURCES=driver.c  \
+		hook.c  \
+		scancode.c \
+		compare.c \
+		thread.c
+		
+
