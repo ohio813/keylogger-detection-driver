@@ -8,11 +8,11 @@
 #ifndef OBCOMPARE_H_
 #define OBCOMPARE_H_
 
-#include "obdriver.h"
+#include "driver.h"
 
 /* Prototypes */
 int bruteMatch(char *pI, char *pM, int targetLength, int sourceLength);
-bool recursiveMatch(char *pTarget, *pSource, int targetLength, int sourceLength, int targetIndex, int sourceIndex, int matches);
+bool recursiveMatch(char *pTarget, char *pSource, int targetLength, int sourceLength, int targetIndex, int sourceIndex, int matches);
 void enqueueData(char data, char target);
 void initializeCompariosonComponent(int bSize, int wSize);
 

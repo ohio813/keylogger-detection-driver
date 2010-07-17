@@ -87,10 +87,10 @@ int bruteMatch(char *pI, char *pM, int targetLength, int sourceLength)
             {
                 //numMatches++;
                 counter++;
-                if (numMatches > cushion)
-                {
-                    // matches exceed cushion - likely pattern emerged
-                }
+                // if (numMatches > cushion)
+                // {
+                    // // matches exceed cushion - likely pattern emerged
+                // }
             }
 
             // reset search vars
