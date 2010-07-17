@@ -7,8 +7,8 @@
  * Adapted from Klog rootkit by Clandestine
  */
 
-#include "obdriver.h"
-#include "obscancode.h"
+#include "driver.h"
+#include "scancode.h"
 #include "ntddkbd.h"
 
 /* Regular scan code map */
