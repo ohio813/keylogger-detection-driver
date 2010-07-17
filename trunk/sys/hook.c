@@ -5,11 +5,11 @@
  * Environment: Kernel mode only
  */
 
-#include "obdriver.h"
-#include "obhook.h"
-#include "obscancode.h"
-#include "obcompare.h"
-#include "obthread.h"
+#include "driver.h"
+#include "hook.h"
+#include "scancode.h"
+#include "compare.h"
+#include "thread.h"
 #include "ntddkbd.h"
 
 int numPendingIrps = 0;

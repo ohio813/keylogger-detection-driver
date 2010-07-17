@@ -3,9 +3,9 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "obdriver.h"
-#include "obcompare.h"
-#include "obthread.h"
+#include "driver.h"
+#include "compare.h"
+#include "thread.h"
 
 #define CUSHION 5 // should be larger for more accurate detection
 
