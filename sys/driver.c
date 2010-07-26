@@ -87,8 +87,10 @@ DriverEntry(
 	MappedSystemCallTable = MmMapLockedPages(g_pmdlSystemCall, KernelMode); //TODO: use MmMapLockedPagesSpecifyCache instead, MmMapLockedPages is obselete according to OACR
 
 	// Hook the system call
+	_asm{cli}
 	HOOK_SYSCALL(ZwWriteFile, NewZwWriteFile, OldZwWriteFile);
 	HOOK_SYSCALL(ZwCreateFile, NewZwCreateFile, OldZwCreateFile);
+	_asm{sti}
 
 	//***End HideProcessHookMDL SSDT hook code***
 
