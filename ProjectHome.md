@@ -1,0 +1,1 @@
+Windows NT layered device driver that attempts to dynamically detect the presence of keystroke monitoring software (keyloggers).
